@@ -8,7 +8,7 @@ function App() {
     <div className="app">
       {/* Header */}
       <header className="header">
-        <h1 className="logo">Juber Store</h1>
+        <h1 className="logo" >Juber Store</h1>
         <nav>
           <button onClick={() => setPage("home")}>Home</button>
           <button onClick={() => setPage("shop")}>Products</button>
