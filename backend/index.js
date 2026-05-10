@@ -11,6 +11,7 @@ app.use(cors())
 
 app.get('/products', async (req, res) => {
     try {
+        // Select all coloumns in products table from pg database
         const result = await pool.query('SELECT * FROM products')
         // return respomse object as a JSON so it can be returned in browser console
         res.json(result.rows)
