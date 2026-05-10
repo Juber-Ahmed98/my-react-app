@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <div className="app">
       {/* Header */}
       <header className="header">
-        <h1 className="logo" >Juber Store</h1>
+        <h1 className="logo">Juber Store</h1>
         <nav>
           <button onClick={() => setPage("home")}>Home</button>
           <button onClick={() => setPage("shop")}>Products</button>
@@ -39,25 +39,48 @@ function Home() {
   return (
     <div>
       <h2>Welcome to Juber Store</h2>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi officia alias iste enim iusto est illum suscipit sapiente eaque, quas ut, sed odio rem earum fugiat dolorem quam ad voluptas?</p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi officia
+        alias iste enim iusto est illum suscipit sapiente eaque, quas ut, sed
+        odio rem earum fugiat dolorem quam ad voluptas?
+      </p>
 
       <div className="hero">
-        <div className="hero-box"><p>Featured Product</p></div>
+        <div className="hero-box">
+          <p>Featured Product</p>
+        </div>
       </div>
     </div>
   );
 }
 
 function Shop() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    async function fetchProducts() {
+      // asks backend for the data that we set to the port 3000 and path /products
+      const res = await fetch("http://localhost:3000/products");
+      // return raw http response as an array
+      const productsData = await res.json();
+
+      console.log(productsData);
+      setProducts(productsData);
+    }
+
+    fetchProducts();
+  }, []);
+
   return (
     <div>
       <h2>Shop Products</h2>
 
       <div className="product-grid">
-        <div className="product-card"><p>Product 1</p></div>
-        <div className="product-card"><p>Product 2</p></div>
-        <div className="product-card"><p>Product 3</p></div>
-        <div className="product-card"><p>Product 4</p></div>
+        {products.map((product) => (
+          <div className="product-card" key={product.id}>
+            <p>{product.name}</p>
+            <p>£{product.price}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -68,7 +91,9 @@ function Basket() {
     <div>
       <h2>Your Basket</h2>
 
-      <div className="basket-box"><p>Basket Item Placeholder</p></div>
+      <div className="basket-box">
+        <p>Basket Item Placeholder</p>
+      </div>
       <div className="basket-summary">
         <p>Total: £0.00</p>
         <button>Checkout</button>
